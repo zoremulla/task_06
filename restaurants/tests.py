@@ -51,7 +51,7 @@ class RestaurantViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_create_view(self):
-        create_url = reverse("restaurant-detail")
+        create_url = reverse("restaurant-create")
         response = self.client.get(create_url)
         self.assertEqual(response.status_code, 200)
         response2 = self.client.post(create_url, self.data)
