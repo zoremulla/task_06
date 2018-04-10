@@ -3,7 +3,7 @@ from django.urls import reverse
 from restaurants.models import Restaurant
 from restaurants.forms import RestaurantForm
 
-class RestarantModelTestCase(TestCase):
+class RestaurantModelTestCase(TestCase):
     def test_create(self):
         Restaurant.objects.create(
             name="Hamza's Pizza",
@@ -51,14 +51,14 @@ class RestaurantViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_create_view(self):
-        create_url = reverse("restaurant-detail")
+        create_url = reverse("restaurant-create")
         response = self.client.get(create_url)
         self.assertEqual(response.status_code, 200)
         response2 = self.client.post(create_url, self.data)
         self.assertEqual(response2.status_code, 302)
 
 
-class RestarantFormTestCase(TestCase):
+class RestaurantFormTestCase(TestCase):
     def test_valid_form(self):
         name = "Some random restaurant"
         description = "Some random description"
@@ -70,7 +70,7 @@ class RestarantFormTestCase(TestCase):
             'opening_time': opening_time,
             'closing_time': closing_time
         }
-        form = RestarantForm(data=data)
+        form = RestaurantForm(data=data)
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data.get('name'), name)
         self.assertEqual(form.cleaned_data.get('description'), description)
@@ -82,5 +82,5 @@ class RestarantFormTestCase(TestCase):
             'name':name,
             'description': description,
         }
-        form = RestarantForm(data=data)
+        form = RestaurantForm(data=data)
         self.assertFalse(form.is_valid())
