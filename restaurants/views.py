@@ -16,3 +16,10 @@ def restaurant_detail(request, restaurant_id):
         "restaurant": Restaurant.objects.get(id=restaurant_id)
     }
     return render(request, 'detail.html', context)
+
+def restaurant_create(request):
+
+    context = {
+
+    }
+    return render(request, 'create.html', context)
