@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from restaurants.models import Restaurant
+from restaurants.forms import RestaurantForm
 
 class RestarantModelTestCase(TestCase):
     def test_create(self):
@@ -13,6 +14,12 @@ class RestarantModelTestCase(TestCase):
 
 class RestaurantViewTestCase(TestCase):
     def setUp(self):
+        self.data = {
+            "name": "Hamza's Pizza",
+            "description": "Pizza that tastes really good.",
+            "opening_time": "00:01:00",
+            "closing_time":"23:59:00"
+        }
         self.restaurant_1 = Restaurant.objects.create(name="Restaurant 1", description="This is Restaurant 1", opening_time="00:01:00", closing_time="23:59:00")
         self.restaurant_2 = Restaurant.objects.create(name="Restaurant 2", description="This is Restaurant 2", opening_time="00:01:00", closing_time="23:59:00")
         self.restaurant_3 = Restaurant.objects.create(name="Restaurant 3", description="This is Restaurant 3", opening_time="00:01:00", closing_time="23:59:00")
@@ -42,3 +49,38 @@ class RestaurantViewTestCase(TestCase):
         self.assertContains(response, self.restaurant_1.description)
         self.assertTemplateUsed(response, 'detail.html')
         self.assertEqual(response.status_code, 200)
+
+    def test_create_view(self):
+        create_url = reverse("restaurant-detail")
+        response = self.client.get(create_url)
+        self.assertEqual(response.status_code, 200)
+        response2 = self.client.post(create_url, self.data)
+        self.assertEqual(response2.status_code, 302)
+
+
+class RestarantFormTestCase(TestCase):
+    def test_valid_form(self):
+        name = "Some random restaurant"
+        description = "Some random description"
+        opening_time = "12:15"
+        closing_time = "10:15"
+        data = {
+            'name':name,
+            'description': description,
+            'opening_time': opening_time,
+            'closing_time': closing_time
+        }
+        form = RestarantForm(data=data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data.get('name'), name)
+        self.assertEqual(form.cleaned_data.get('description'), description)
+
+    def test_invalid_form(self):
+        name = "Some restaurant"
+        description = "Some random description"
+        data = {
+            'name':name,
+            'description': description,
+        }
+        form = RestarantForm(data=data)
+        self.assertFalse(form.is_valid())
