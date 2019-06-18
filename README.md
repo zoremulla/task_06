@@ -1,5 +1,5 @@
 1. Setup a virtual environment.
-2. Fork the repository for [Django Task 06](https://github.com/JoinCODED/task_06) in JoinCODED’s Github and Clone it.
+2. Fork the repository and Clone it.
 3. Install the packages from the requirements file.
 4. Create a **form** for **creating** `Restaurant` objects.
     * Your form should be in a `forms.py` file.
